@@ -1,0 +1,56 @@
+﻿@model MVC_Entity_Framework.Models.Articulo
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Articulo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Entrada" method="get">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div>
+                <div class="form-group">
+                    <input type="submit" value="agregar entrada" class="btn btn-primary" />
+                </div>
+            </div>
+            </form>
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Actvo" /> @Html.DisplayNameFor(model => model.Actvo)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoriaPrincipal" class="control-label"></label>
+                    <input asp-for="CategoriaPrincipal" class="form-control" />
+                    <span asp-validation-for="CategoriaPrincipal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoriasSecundaria" class="control-label"></label>
+                    <input asp-for="CategoriasSecundaria" class="form-control" />
+                    <span asp-validation-for="CategoriasSecundaria" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PalabrasClave" class="control-label"></label>
+                    <input asp-for="PalabrasClave" class="form-control" />
+                    <span asp-validation-for="PalabrasClave" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

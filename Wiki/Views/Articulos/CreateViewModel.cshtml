@@ -1,0 +1,54 @@
+﻿@model MVC_Entity_Framework.ViewModels.ArtListCatViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Articulo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            
+            <div class="form-group">
+                <label  title="Titulo" class="control-label">Titulo</label>
+                <input asp-for="ArticuloDTO.encabezadotitulo" class="form-control" required />
+                <span asp-validation-for="ArticuloDTO.encabezadotitulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label value="Descripcion" class="control-label">Descripcion</label>
+                <input asp-for="ArticuloDTO.encabezadodescri" class="form-control" required/>
+                <span asp-validation-for="ArticuloDTO.encabezadodescri" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label value="Categoria Principal" class="control-label">Categoria principal</label>
+                <input asp-for="prin" class="form-control" />
+                <span asp-validation-for="prin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label value="Categoria secundaria" class="control-label">Categoria secundaria</label>
+                <input asp-for="secu" class="form-control" />
+                <span asp-validation-for="secu" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label value="Palabras claves" class="control-label">Palabras clave</label>
+                <input asp-for="ArticuloDTO.PalalabrasCaves" class="form-control" />
+                <span asp-validation-for="ArticuloDTO.PalalabrasCaves" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

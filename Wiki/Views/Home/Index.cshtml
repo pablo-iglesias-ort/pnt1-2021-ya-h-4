@@ -1,0 +1,60 @@
+﻿@model IEnumerable<MVC_Entity_Framework.ViewModels.ArticuloViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<h4>Bienvenido@@ a la wiki, abajo podras encontrar una lista con los ultimos 4 articulos, sus entradas, fecha creacion y autor , arriba puedes iniciar sesion o crear una cuenta.</h4>
+<h1>Articulos</h1>
+<form asp-controller="Home" asp-action="Index" method="get">
+    <p>
+        <input type="text" name="SearchString" />
+        <input type="submit" value="Buscar" />
+    </p>
+</form>
+@if (Model != null)
+{
+
+
+    @foreach (var item in Model)
+    {
+        <div class="card mt-3 border-dark">
+            <div class="card-header">
+                Titulo: @Html.DisplayFor(modelItem => item.Articulo.Encabezado.Titulo)
+            </div>
+            <div class="card-body">
+                <section>Descripcion: @Html.DisplayFor(modelItem => item.Articulo.Encabezado.Descripcion)</section>
+                <section>
+
+                    @if (item.Articulo.Cuerpo != null)
+                    {
+
+                        @if (item.Articulo.Cuerpo.Entradas != null)
+                        {
+                            <span>Entradas</span>
+                            <ul>
+                                @foreach (var entrada in item.Articulo.Cuerpo.Entradas)
+                                {
+                                <li>
+                                    @Html.DisplayFor(modelItem => entrada.Titulo)
+                                </li>
+
+                                    
+                                }
+
+                            </ul>
+
+                        }
+                    }
+
+                </section>
+                
+            </div>
+
+            <div class="card-footer">Autor: @Html.DisplayFor(modelItem => item.Articulo.Autor.Nombre)</div>
+            <div>@Html.DisplayFor(modelItem => item.Articulo.Fecha)</div>
+        </div>
+    }
+
+}
+
+
+

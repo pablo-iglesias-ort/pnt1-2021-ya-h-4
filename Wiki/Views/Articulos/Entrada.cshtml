@@ -1,0 +1,48 @@
+﻿@model MVC_Entity_Framework.ViewModels.EntradaCreateViewModel
+
+@{
+    ViewData["Title"] = "Entrada";
+}
+
+<h1>deseas crear una entrada?</h1>
+
+<h4>Entrada</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Entrada">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Entrada.Titulo" class="control-label"></label>
+                <input asp-for="Entrada.Titulo" class="form-control" required/>
+                <span asp-validation-for="Entrada.Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Entrada.Subtitulo" class="control-label"></label>
+                <input asp-for="Entrada.Subtitulo" class="form-control" required/>
+                <span asp-validation-for="Entrada.Subtitulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Entrada.Texto" class="control-label"></label>
+                <input asp-for="Entrada.Texto" class="form-control" required/>
+                <span asp-validation-for="Entrada.Texto" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="ArtId" class="control-label"></label>
+                <input asp-for="ArtId" class="form-control" />
+                <span asp-validation-for="ArtId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="CreateEntrada" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script>
+
+</script>
