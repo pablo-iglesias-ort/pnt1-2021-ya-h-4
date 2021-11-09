@@ -111,7 +111,7 @@ namespace MVC_Entity_Framework.Controllers
                         await _context.SaveChangesAsync();
                         var localuser = new LocalStorageUser()
                         {
-                            Token = "aaaaaaaaaaaaaaaaaaaaaa",
+                            Token = "testing",
                             Rol = newuser.Roles.Last().NombreRol,
                             UserId=newuser.Id,
                         };
