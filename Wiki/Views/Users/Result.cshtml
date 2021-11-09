@@ -8,7 +8,12 @@
     <a asp-action="Index">Ver todos articulos</a>
 </div>
 
-<h5>Tus articulos...</h5>
+
 <script>
-    localStorage.setItem('token', 'sdfsdfsdf')
+    var data = @Html.Raw(JsonConvert.SerializeObject(this.Model));
+    
+    console.log(data)
+    localStorage.setItem('token', data.Token)
+    localStorage.setItem('rol', data.Rol)
+    localStorage.setItem('userid', data.UserId)
 </script>

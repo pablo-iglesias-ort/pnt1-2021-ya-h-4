@@ -1,10 +1,10 @@
-﻿@model IEnumerable<MVC_Entity_Framework.Models.Estudiante>
+﻿@model IEnumerable<MVC_Entity_Framework.Models.Articulo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ArticulosByCategoria";
 }
 
-<h1>Index</h1>
+<h1>ArticulosByCategoria</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,16 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Dni)
+                @Html.DisplayNameFor(model => model.Fecha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.Actvo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaDeNacimiento)
+                @Html.DisplayNameFor(model => model.PalabrasClave)
             </th>
             <th></th>
         </tr>
@@ -31,16 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Dni)
+                @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.Actvo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaDeNacimiento)
+                @Html.DisplayFor(modelItem => item.PalabrasClave)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -1,0 +1,7 @@
+﻿Operación Compilar iniciada..
+1>------ Operación Compilar iniciada: proyecto: Wiki, configuración: Debug Any CPU ------
+1>C:\WIKI\pnt1-2021-ya-h-4\Wiki\Controllers\CategoriasController.cs(29,42,29,48): warning CS1998: El método asincrónico carece de operadores "await" y se ejecutará de forma sincrónica. Puede usar el operador 'await' para esperar llamadas API que no sean de bloqueo o 'await Task.Run(...)' para hacer tareas enlazadas a la CPU en un subproceso en segundo plano.
+1>Wiki -> C:\WIKI\pnt1-2021-ya-h-4\Wiki\bin\Debug\netcoreapp3.1\Wiki.dll
+1>Wiki -> C:\WIKI\pnt1-2021-ya-h-4\Wiki\bin\Debug\netcoreapp3.1\Wiki.Views.dll
+1>Compilación del proyecto "Wiki.csproj" terminada.
+========== Compilar: 1 correctos, 0 incorrectos, 0 actualizados, 0 omitidos ==========

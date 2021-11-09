@@ -25,20 +25,11 @@
                 <span asp-validation-for="ArticuloDTO.encabezadodescri" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label value="Categoria Principal" class="control-label">Categoria principal</label>
-                <input asp-for="prin" class="form-control" />
-                <span asp-validation-for="prin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label value="Categoria secundaria" class="control-label">Categoria secundaria</label>
-                <input asp-for="secu" class="form-control" />
-                <span asp-validation-for="secu" class="text-danger"></span>
-            </div>
+            
 
             <div class="form-group">
                 <label value="Palabras claves" class="control-label">Palabras clave</label>
-                <input asp-for="ArticuloDTO.PalalabrasCaves" class="form-control" />
+                <input asp-for="ArticuloDTO.PalalabrasCaves" class="form-control" required />
                 <span asp-validation-for="ArticuloDTO.PalalabrasCaves" class="text-danger"></span>
             </div>
             <div class="form-group">

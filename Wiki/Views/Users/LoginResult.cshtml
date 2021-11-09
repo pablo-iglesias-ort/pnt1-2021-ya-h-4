@@ -1,4 +1,4 @@
-﻿@model MVC_Entity_Framework.Models.LocalStorageUser
+﻿@model MVC_Entity_Framework.Models.Usuario
 
 <h1>Se inicio sesion</h1>
 <div>
@@ -9,6 +9,8 @@
 </div>
 
 <h5>Tus articulos...</h5>
+@Html.DisplayNameFor(model => model.Roles)
 <script>
+    console.log()
     localStorage.setItem('token', 'sdfsdfsdf')
 </script>

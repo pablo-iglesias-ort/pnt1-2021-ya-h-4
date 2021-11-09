@@ -8,5 +8,7 @@ namespace MVC_Entity_Framework.Models
     public class LocalStorageUser
     {
         public string Token { get; set; }
+        public string Rol { get; set; }
+        public int UserId { get; set; }
     }
 }

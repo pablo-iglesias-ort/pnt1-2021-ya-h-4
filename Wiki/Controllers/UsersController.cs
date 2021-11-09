@@ -40,13 +40,20 @@ namespace MVC_Entity_Framework.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public async Task <List<Usuario>> UsersList()
+        {
+            var users = await _context.Usuarios.Include(r=>r.Roles).ToListAsync();
+
+            return users;
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Email,PassWord")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                var checifexist = await _context.Usuarios.FirstOrDefaultAsync(e => e.Email == usuario.Email);
+                var checifexist = await _context.Usuarios.Include(r=>r.Roles).FirstOrDefaultAsync(e => e.Email == usuario.Email);
                 //se cheque que el usuario exista o se devuelve error
                 if (checifexist == null)
                 {
@@ -60,7 +67,7 @@ namespace MVC_Entity_Framework.Controllers
                 else
                 {
                     //todo ok se devuelve la vista resultado ok
-                    return View("LoginResult");
+                    return View("LoginResult",checifexist);
                 }
             }
             //error de modelo invalido sin mail o password
@@ -72,7 +79,7 @@ namespace MVC_Entity_Framework.Controllers
         {
             if (ModelState.IsValid)
             {
-                var checifexist = await _context.Usuarios.FirstOrDefaultAsync(e=>e.Email==newuser.Email);
+                var checifexist = await _context.Usuarios.Include(r => r.Roles).FirstOrDefaultAsync(e=>e.Email==newuser.Email);
                 //se chequea que no exista otro usuario con ese correo
                 if (checifexist != null)
                 {
@@ -86,7 +93,7 @@ namespace MVC_Entity_Framework.Controllers
 
                     if (!success)
                     {
-
+                        return View("Error");
                     }
                     else
                     {
@@ -102,6 +109,13 @@ namespace MVC_Entity_Framework.Controllers
                         newuser.Roles=roleslist;
                         _context.Update(newuser);
                         await _context.SaveChangesAsync();
+                        var localuser = new LocalStorageUser()
+                        {
+                            Token = "kjshjkdhksjhdkshdh",
+                            Rol = newuser.Roles.Last().NombreRol,
+                            UserId=newuser.Id,
+                        };
+                        return View("Result", localuser);
                     }
                     
                 }
@@ -110,10 +124,23 @@ namespace MVC_Entity_Framework.Controllers
                     
                 }
                 
-                return View("Result");
+                
                 
             }
             return View(newuser);
         }
+
+        public async Task <List<Usuario>> TopTresAutores()
+        {
+            //buscar los articulos
+            //ordenarlos por id de autor
+            //tomar los primero 3 articulos para usar el usuario id
+            //buscar los 3 autores por id
+            var users = await _context.Usuarios
+                .Include(r => r.Roles)
+                .ToListAsync();
+            return users;
+        }
+
     }
 }

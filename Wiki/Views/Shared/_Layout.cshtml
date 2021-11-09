@@ -35,7 +35,10 @@
                             <a class="nav-link text-dark" id="cerrarsesion" asp-area="" asp-controller="Users" asp-action="Logout">Cerrar sesion</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" id="misarticulos" asp-area="" asp-controller="Articulos" asp-action="Index">Mis articulos</a>
+                            <a class="nav-link text-dark" id="misarticulos" asp-area="" asp-controller="Articulos" asp-action="ArticulosUserId">Mis articulos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" id="categorias" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
                         </li>
                     </ul>
                 </div>
@@ -63,11 +66,16 @@
         const sesion = document.getElementById("sesion")
         const cerrarsesion = document.getElementById("cerrarsesion")
         const misarticulos = document.getElementById("misarticulos")
+        const userid = localStorage.getItem("userid")
+        const rol = localStorage.getItem("rol")
+        if (rol == "Admin") {
+
+        }
+        console.log(userid)
         if (localStorage.getItem("token") === null) {
             crearart.hidden = true
             cerrarsesion.hidden = true
             misarticulos.hidden = true
-            console.log("SDSDDS")
         } else {
             cerrarsesion.hidden = false
             sesion.hidden = true

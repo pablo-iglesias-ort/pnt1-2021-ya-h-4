@@ -17,8 +17,44 @@ namespace MVC_Entity_Framework.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public async Task <List<Articulo>> ArticulosUserId(int id)
+        {
+            var articulosList = new List<Articulo>();
+            var query = await _context.Articulos.Include(a=>a.Autor).Where(i => i.Autor.Id == id).ToListAsync();
+            Console.WriteLine(query);
+            articulosList = query;
+            return query;
+        }
 
-        
+        public async Task <IActionResult> ArticulosByCategoria(int categoriaid)
+        {
+           // categoriaid = 1;
+            var query = await _context.Articulos
+                .Include(c=>c.CategoriaPrincipal)
+                .Include(cat => cat.CategoriasSecundaria)
+                .Include(a => a.Encabezado)
+                .Include(c => c.Cuerpo.Entradas)
+                .Include(a => a.Autor)
+                .Where(c => c.CategoriaPrincipal.Id == categoriaid)
+                .ToListAsync();
+            if (query != null)
+            {
+                List<ArticuloViewModel> viemodellist = new List<ArticuloViewModel>();
+                foreach (var art in query)
+                {
+                    var model = new ArticuloViewModel()
+                    {
+                        Articulo = art
+                    };
+                    viemodellist.Add(model);
+                }
+
+                var newlist = viemodellist.OrderByDescending(x => x.Articulo.Fecha).ToList().Take(4);
+                return View(query);
+            }
+            return BadRequest();
+        }
         public async Task<IActionResult> Index()
         {
             List<ArticuloViewModel> viemodellist = new List<ArticuloViewModel>();
@@ -30,11 +66,11 @@ namespace MVC_Entity_Framework.Controllers
                 .Include(a => a.Autor)
                 .ToListAsync();
 
-            var movies = from m in _context.Articulos
+            var articulos = from m in _context.Articulos
                          select m;
             
 
-            foreach (var art in movies)
+            foreach (var art in articulos)
             {
                 var model = new ArticuloViewModel()
                 {
@@ -89,11 +125,11 @@ namespace MVC_Entity_Framework.Controllers
                 articulo.Fecha = DateTime.Now;
                 var autor = new Autor()
                 {
-                    Nombre="Juan",
-                    Apellido="Lopez",
-                    Telefono="111111",
-                    Email="test@gmail.com",
-                    Password="test",
+                    Nombre="Agustin",
+                    Apellido="bereciartua",
+                    Telefono="23232332",
+                    Email="sdsd@sdsd.c",
+                    Password="sdsd",
                     FechaAlta=DateTime.Now,
                 };
                 var encabezado = new Encabezado()
@@ -119,7 +155,7 @@ namespace MVC_Entity_Framework.Controllers
                 };
                 return View("Entrada", vmentrad);
             }
-            return View(articulovm);
+            return View("Error");
         }
         //controlador para crear o agregar una entrada
         [HttpPost]
