@@ -167,24 +167,18 @@ De la misma manera Uds. deben definir los tipos de datos asociados a cada una de
     - También se le asignará a estas cuentas el rol de Administrador.
 - Los usuarios pueden navegar por la wiki y postear mensajes en los articulos.
 - Pueden crear Articulos.
-- Pueden solicitar la creación de un Categoria.
-- Si ya existe una solicitud para esa categoría, se le debe informar.
-- Se debe mostrar al usuario sus solicitudes de categorias, con su estado.
 
 **Autor**
 - Un Autor puede crear un articulo
     - El proceso será en modo Wizard.
         - Selecciona la categoria existente.
-        -- Si no existe la categoria que quiere, puede solicitar la creación de una, mediante la carga una que no estará activa.
-        --- El proceso será igual que la creación de una nueva categoria, con la diferencia de: 1. Estará desactivada, hasta que un administrador la active. 2. Quedará un registro del usuario solicitante, para notificarlo con el resultado de su solicitud. 
         - Puede seleccionar más categorias como secundarias.
         - Crea un encabezado con su contenido
         - Hasta aquí es lo minimo requerido para crear un articulo.
         - Luego se le consulta, si quiere crear una entrada en el Articulo.
         -- Al finalizar, le vuelve a consultar si quiere agregar más entradas y repetir el proceso.
-        -- Cada entrada agregada, quedará debajo de la anterior al visualizarse en el articulo.
-        - Puede agregar referencias a otros articulos de la wiki. Para ello, se le ofrecerá agregar referencias y mediante un buscador, podrá seleccionar articulos para generar una referencia.
-        - También, podrá agregar palabras clave, que sirvan para que encuentren su articulo. Al agregar una palabra clave, buscará una similitud en la base de palabras y propondrá hasta 10, El autor puede seleccionar una o crear una.
+        -- Cada entrada agregada, quedará debajo de la anterior al visualizarse en el articulo.        
+	- Podrá agregar palabras clave, que sirvan para que encuentren su articulo. Al agregar una palabra clave, buscará una similitud en la base de palabras y propondrá hasta 10, El autor puede seleccionar una o crear una.
         - El articulo estará por defecto desactivado.
 - El Autor, puede activar y desactivar sus articulos cuando lo desee.
 - Puede actualizar datos de contacto etc.
@@ -192,8 +186,6 @@ De la misma manera Uds. deben definir los tipos de datos asociados a cada una de
 **Administrador**
 - Un Administrador, puede crear Categorias.
 - Un Administrador, puede desactivar articulos de los usuarios.
-- Puede activar categorias propuestas por los usuarios.
-- Puede crear palabras clave
 
 **Articulo**
 - El articulo tendrá una categoria principal, y puede tener categorias secundarias.
@@ -203,15 +195,12 @@ De la misma manera Uds. deben definir los tipos de datos asociados a cada una de
 - Solo puede tener un Autor
 - Solo puede tener un Encabezado
 - Solo puede tener un Cuerpo, el cual podrá tener muchas entradas. Ordenadas, en el orden que se fueron agregando.
-- Las Referencias, serán visualizadas como links, a otros articulos.
 - Los Mensajes serán visualizados, en orden creciente por fecha de carga. 
-- Las PalabrasClave, serviran para encontrar el articulo, y serán visualizadas también como links, a un listado de articulos relacionados.
 
 **Aplicación General**
 - La wiki, mostrará los encabezados en la home de los ultimos 4 articulos creados. Para que los usuarios puedan acceder a verlos.
 - Se debe ofrecer también, navegación por categorias. 
 - Se debe ofrecer un buscador, por palabras clave, que ofrecerá un listado sabana, de articulos relacionados. Hasta 10.
-- Se debe listar el top 3 de autores con más articulos.
 - Los usuarios no pueden eliminar los articulos, solo pueden deshabilitarse.
 - Los administradores, si pueden eliminar los articulos.
 - Los accesos a las funcionalidades y/o capacidades, debe estar basada en los roles que tenga cada individuo.
