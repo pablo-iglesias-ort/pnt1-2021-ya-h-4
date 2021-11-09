@@ -125,11 +125,11 @@ namespace MVC_Entity_Framework.Controllers
                 articulo.Fecha = DateTime.Now;
                 var autor = new Autor()
                 {
-                    Nombre="Agustin",
-                    Apellido="bereciartua",
-                    Telefono="23232332",
-                    Email="sdsd@sdsd.c",
-                    Password="sdsd",
+                    Nombre="Juan",
+                    Apellido="test",
+                    Telefono="1111",
+                    Email="test@ort.com",
+                    Password="test",
                     FechaAlta=DateTime.Now,
                 };
                 var encabezado = new Encabezado()
