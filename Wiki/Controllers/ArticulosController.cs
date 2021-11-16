@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Entity_Framework.Data;
 using MVC_Entity_Framework.Models;
@@ -10,21 +11,33 @@ using System.Threading.Tasks;
 
 namespace MVC_Entity_Framework.Controllers
 {
-    public class ArticulosController : Controller
+    [Authorize]
+    public class ArticulosController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly MVC_Entity_FrameworkContext _context;
         public ArticulosController(MVC_Entity_FrameworkContext context)
         {
             _context = context;
         }
+        [Authorize]
         [HttpGet]
-        public async Task <List<Articulo>> ArticulosUserId(int id)
+        public async Task <List<Articulo>> ArticulosUserId(Guid id)
         {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            //DFD8B40F - 4D19 - 4F95 - 8E71 - A58145588639
+            var userid = currentUser.Claims.First().Value ;
+            var user = await _context.Usuarios.Where(n => n.Nombre == userid).FirstOrDefaultAsync();
             var articulosList = new List<Articulo>();
-            var query = await _context.Articulos.Include(a=>a.Autor).Where(i => i.Autor.Id == id).ToListAsync();
+            var query = await _context.Articulos
+                .Include(a=>a.Autor)
+                .Include(x=>x.Encabezado)
+                .Where(i => i.Autor.Id == user.Id)
+                .ToListAsync();
+
             Console.WriteLine(query);
+
             articulosList = query;
-            return query;
+            return articulosList;
         }
 
         public async Task <IActionResult> ArticulosByCategoria(int categoriaid)
@@ -36,7 +49,7 @@ namespace MVC_Entity_Framework.Controllers
                 .Include(a => a.Encabezado)
                 .Include(c => c.Cuerpo.Entradas)
                 .Include(a => a.Autor)
-                .Where(c => c.CategoriaPrincipal.Id == categoriaid)
+               // .Where(c => c.CategoriaPrincipal.Id == categoriaid)
                 .ToListAsync();
             if (query != null)
             {
@@ -103,33 +116,34 @@ namespace MVC_Entity_Framework.Controllers
             return View("CreateViewModel");
         }
         //POST: Articulos/Create *ruta para crear nuevo  articulo
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int secu,
-            int prin,
+        public async Task<IActionResult> Create(Guid secu,
+            Guid prin,
             string palabrasclave,
         ArtListCatViewModel articulovm)
         {
             if (ModelState.IsValid)
             {
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                var nombre=currentUser.Claims.First().Value;
                 //buscamos las categorias
-                var catprinc = await _context.Categorias.Where(i => i.Id == prin).FirstOrDefaultAsync();
+                var catprinc = await _context.Categorias.FirstOrDefaultAsync();
                 var catsecu = await _context.Categorias.Where(i => i.Id == secu).FirstOrDefaultAsync();
                 //creamos el articulo
                 var articulo = new Articulo();
                 //asignamos categorias
                 articulo.CategoriaPrincipal = catprinc;
-                articulo.CategoriasSecundaria = catsecu;
+                //articulo.CategoriasSecundaria.ad catsecu;
                 //asignamos palabras claves
                 articulo.PalabrasClave = articulovm.ArticuloDTO.PalalabrasCaves;
                 articulo.Fecha = DateTime.Now;
                 var autor = new Autor()
                 {
-                    Nombre="Juan",
-                    Apellido="test",
-                    Telefono="1111",
-                    Email="test@ort.com",
-                    Password="test",
+                    Nombre= nombre,
+                    Email= nombre,
+                    Apellido="Apellido"+nombre,
                     FechaAlta=DateTime.Now,
                 };
                 var encabezado = new Encabezado()
@@ -147,7 +161,14 @@ namespace MVC_Entity_Framework.Controllers
                 articulo.Encabezado = encabezado;
                 articulo.Cuerpo = cuerpo;
                 _context.Add(articulo);
-                await _context.SaveChangesAsync();
+                try
+                {
+
+                    await _context.SaveChangesAsync();
+                }catch(Exception e)
+                {
+                    Console.WriteLine(e);
+                }
                 var vmentrad = new EntradaCreateViewModel()
                 {
                     ArtId = articulo.Id,

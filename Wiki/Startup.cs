@@ -9,6 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MVC_Entity_Framework.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using MVC_Entity_Framework.Models;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json;
 
 namespace MVC_Entity_Framework
 {
@@ -24,10 +29,22 @@ namespace MVC_Entity_Framework
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllersWithViews();
-
-		    services.AddDbContext<MVC_Entity_FrameworkContext>(opciones => opciones.UseSqlite("filename=BaseDeDatos.db"));
-		    //services.AddDbContext<MVC_Entity_FrameworkContext>(opciones => opciones.UseSqlite(Configuration.GetConnectionString("MVC_Entity_FrameworkContext")));
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+				opciones =>
+				{
+					opciones.LoginPath = "/Users/Ingresar";
+					opciones.AccessDeniedPath = "/Users/AccesoDenegado";
+					opciones.LogoutPath = "/Users/Salir";
+				}
+			);
+			services.AddControllersWithViews().AddNewtonsoftJson();
+			services.AddMvc()
+				 .AddNewtonsoftJson(
+					  options => {
+						  options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+					  });
+			services.AddDbContext<MVC_Entity_FrameworkContext>(opciones => opciones.UseSqlite("filename=BaseDeDatos.db"));
+			//services.AddDbContext<MVC_Entity_FrameworkContext>(opciones => opciones.UseSqlite(Configuration.GetConnectionString("MVC_Entity_FrameworkContext")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +61,7 @@ namespace MVC_Entity_Framework
 			app.UseStaticFiles();
 
 			app.UseRouting();
-
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

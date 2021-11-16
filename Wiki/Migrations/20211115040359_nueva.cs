@@ -3,43 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVC_Entity_Framework.Migrations
 {
-    public partial class _123 : Migration
+    public partial class nueva : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Autores",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(nullable: false),
-                    Apellido = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Telefono = table.Column<string>(nullable: true),
-                    FechaAlta = table.Column<DateTime>(nullable: false),
-                    Password = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Autores", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categorias",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(nullable: true),
-                    Activa = table.Column<bool>(nullable: false),
-                    Descripcion = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categorias", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Cuerpos",
                 columns: table => new
@@ -70,12 +37,14 @@ namespace MVC_Entity_Framework.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(nullable: true),
-                    Apellido = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PassWord = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(nullable: false),
+                    User = table.Column<string>(maxLength: 20, nullable: true),
+                    Contraseña = table.Column<byte[]>(nullable: true),
+                    Nombre = table.Column<string>(maxLength: 40, nullable: false),
+                    Apellido = table.Column<string>(maxLength: 80, nullable: false),
+                    Email = table.Column<string>(maxLength: 80, nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    FechaAlta = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,6 +75,21 @@ namespace MVC_Entity_Framework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categorias",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Activa = table.Column<bool>(nullable: false),
+                    Descripcion = table.Column<string>(nullable: true),
+                    ArticuloId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Articulos",
                 columns: table => new
                 {
@@ -113,9 +97,8 @@ namespace MVC_Entity_Framework.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Actvo = table.Column<bool>(nullable: false),
-                    CategoriaPrincipalForeignKey = table.Column<int>(nullable: true),
-                    CategoriasSecundariaForeignKey = table.Column<int>(nullable: true),
-                    AutorForeignKey = table.Column<int>(nullable: true),
+                    CategoriaPrincipalId = table.Column<Guid>(nullable: false),
+                    AutorForeignKey = table.Column<Guid>(nullable: true),
                     EncabezadoForeignKey = table.Column<int>(nullable: true),
                     CuerpoForeignKey = table.Column<int>(nullable: true),
                     PalabrasClave = table.Column<string>(nullable: true)
@@ -124,23 +107,17 @@ namespace MVC_Entity_Framework.Migrations
                 {
                     table.PrimaryKey("PK_Articulos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Articulos_Autores_AutorForeignKey",
+                        name: "FK_Articulos_Usuarios_AutorForeignKey",
                         column: x => x.AutorForeignKey,
-                        principalTable: "Autores",
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Articulos_Categorias_CategoriaPrincipalForeignKey",
-                        column: x => x.CategoriaPrincipalForeignKey,
+                        name: "FK_Articulos_Categorias_CategoriaPrincipalId",
+                        column: x => x.CategoriaPrincipalId,
                         principalTable: "Categorias",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Articulos_Categorias_CategoriasSecundariaForeignKey",
-                        column: x => x.CategoriasSecundariaForeignKey,
-                        principalTable: "Categorias",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Articulos_Cuerpos_CuerpoForeignKey",
                         column: x => x.CuerpoForeignKey,
@@ -151,26 +128,6 @@ namespace MVC_Entity_Framework.Migrations
                         name: "FK_Articulos_Encabezados_EncabezadoForeignKey",
                         column: x => x.EncabezadoForeignKey,
                         principalTable: "Encabezados",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rol",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NombreRol = table.Column<string>(nullable: true),
-                    UsuarioId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rol", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Rol_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -225,14 +182,9 @@ namespace MVC_Entity_Framework.Migrations
                 column: "AutorForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articulos_CategoriaPrincipalForeignKey",
+                name: "IX_Articulos_CategoriaPrincipalId",
                 table: "Articulos",
-                column: "CategoriaPrincipalForeignKey");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Articulos_CategoriasSecundariaForeignKey",
-                table: "Articulos",
-                column: "CategoriasSecundariaForeignKey");
+                column: "CategoriaPrincipalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articulos_CuerpoForeignKey",
@@ -245,6 +197,11 @@ namespace MVC_Entity_Framework.Migrations
                 table: "Articulos",
                 column: "EncabezadoForeignKey",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categorias_ArticuloId",
+                table: "Categorias",
+                column: "ArticuloId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Entradas_CuerpoForeignKey",
@@ -261,20 +218,25 @@ namespace MVC_Entity_Framework.Migrations
                 table: "Referencias",
                 column: "ArticuloId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Rol_UsuarioId",
-                table: "Rol",
-                column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_Email",
-                table: "Usuarios",
-                column: "Email",
-                unique: true);
+            migrationBuilder.AddForeignKey(
+                name: "FK_Categorias_Articulos_ArticuloId",
+                table: "Categorias",
+                column: "ArticuloId",
+                principalTable: "Articulos",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Articulos_Usuarios_AutorForeignKey",
+                table: "Articulos");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Articulos_Categorias_CategoriaPrincipalId",
+                table: "Articulos");
+
             migrationBuilder.DropTable(
                 name: "Entradas");
 
@@ -285,19 +247,13 @@ namespace MVC_Entity_Framework.Migrations
                 name: "Referencias");
 
             migrationBuilder.DropTable(
-                name: "Rol");
-
-            migrationBuilder.DropTable(
-                name: "Articulos");
-
-            migrationBuilder.DropTable(
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "Autores");
+                name: "Categorias");
 
             migrationBuilder.DropTable(
-                name: "Categorias");
+                name: "Articulos");
 
             migrationBuilder.DropTable(
                 name: "Cuerpos");

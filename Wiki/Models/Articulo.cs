@@ -12,11 +12,14 @@ namespace MVC_Entity_Framework.Models
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public bool Actvo { get; set; }
-        [ForeignKey("CategoriaPrincipalForeignKey")]
-        public Categoria CategoriaPrincipal { get; set; }
-        [ForeignKey("CategoriasSecundariaForeignKey")]
-        public Categoria CategoriasSecundaria { get; set; }
+
         
+        [ForeignKey(nameof(CategoriaPrincipal))]
+        public Guid CategoriaPrincipalId { get; set; }
+        public Categoria CategoriaPrincipal { get; set; }
+
+        public IEnumerable<Categoria> CategoriasSecundaria { get; set; }
+
         [ForeignKey("AutorForeignKey")]
         public Autor Autor { get; set; }
         

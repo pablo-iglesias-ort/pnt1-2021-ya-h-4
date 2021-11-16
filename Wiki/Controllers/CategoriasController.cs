@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace MVC_Entity_Framework.Controllers
 {
+    [Authorize]
     public class CategoriasController : Controller
     {
         private readonly MVC_Entity_FrameworkContext _context;
@@ -30,6 +31,7 @@ namespace MVC_Entity_Framework.Controllers
         {
             return View("Crear");
         }
+        /*
         [HttpPost]
         public async Task<IActionResult> NeuvaCategoria()
         {
@@ -61,14 +63,15 @@ namespace MVC_Entity_Framework.Controllers
             }
             
         }
+        */
         public async Task<IActionResult> ArticulosByCategoria(int categoriaid)
         {
-            var query = await _context.Articulos.Where(c => c.CategoriaPrincipal.Id == categoriaid).FirstOrDefaultAsync();
-            if (query != null)
-            {
+            //var query = await _context.Articulos.Where(c => c.CategoriaPrincipal.Id == categoriaid).FirstOrDefaultAsync();
+            //if (query != null)
+            //{
 
-                return View("Index", query);
-            }
+            //    return View("Index", query);
+            //}
             return BadRequest();
         }
         public async Task<IActionResult> Edit(int? id)
@@ -90,10 +93,10 @@ namespace MVC_Entity_Framework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id")] Categoria Categoria)
         {
-            if (id != Categoria.Id)
-            {
-                return NotFound();
-            }
+            //if (id != Categoria.Id)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
@@ -120,14 +123,14 @@ namespace MVC_Entity_Framework.Controllers
                 return NotFound();
             }
 
-            var Categoria = await _context.Categorias
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (Categoria == null)
-            {
-                return NotFound();
-            }
-             _context.Remove(Categoria);
-            await _context.SaveChangesAsync();
+            //var Categoria = await _context.Categorias
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (Categoria == null)
+            //{
+            //    return NotFound();
+            //}
+            // _context.Remove(Categoria);
+            //await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }

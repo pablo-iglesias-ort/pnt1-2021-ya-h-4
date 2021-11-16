@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 
 namespace MVC_Entity_Framework.Models
 {
-    
-		public enum Rol
-		{
-			Admin = 1,
-			Autor = 2,
-			Usuario = 3
-		}
-	
+    public class User:Usuario
+    {
+        public override Rol Rol => Rol.Usuario;
+    }
 }

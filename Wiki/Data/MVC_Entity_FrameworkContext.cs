@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using MVC_Entity_Framework.Models;
 
 namespace MVC_Entity_Framework.Data
@@ -10,21 +11,19 @@ namespace MVC_Entity_Framework.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>().HasIndex(s => s.Email).IsUnique();
+           
         }
-        /*
-        public DbSet<Calificacion> Calificaciones { get; set; }
-        public DbSet<Contacto> Contactos { get; set; }
-        public DbSet<Estudiante> Estudiantes { get; set; }
-        public DbSet<Materia> Materias { get; set; }
-        public DbSet<MateriaEstudiante> MateriasEstudiantes { get; set; }
-        ////////*/
+
+        ////////
         //Se crean los Dbset para migrar tablas y relaciones
+        //public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Articulo> Articulos { get; set; }
         public DbSet<Autor> Autores { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Cuerpo> Cuerpos { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Encabezado> Encabezados { get; set; }
         public DbSet<Entrada> Entradas { get; set; }
         public DbSet<Mensaje> Mensajes { get; set; }

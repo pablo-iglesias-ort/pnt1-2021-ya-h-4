@@ -21,26 +21,39 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="crearart" asp-area="" asp-controller="Articulos" asp-action="Create">Crear articulos</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="crearart" asp-area="" asp-controller="Articulos" asp-action="Create">Crear articulos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="crearcuenta" asp-area="" asp-controller="Users" asp-action="Create">Crear cuenta</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="sesion" asp-area="" asp-controller="Users" asp-action="Login">Iniciar sesion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="cerrarsesion" asp-area="" asp-controller="Users" asp-action="Logout">Cerrar sesion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="misarticulos" asp-area="" asp-controller="Articulos" asp-action="ArticulosUserId">Mis articulos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="categorias" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
-                        </li>
-                    </ul>
+                        }
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="crearcuenta" asp-area="" asp-controller="Users" asp-action="Create">Crear cuenta</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="sesion" asp-area="" asp-controller="Users" asp-action="Login">Iniciar sesion</a>
+                            </li>
+                        }
+                        else
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="cerrarsesion" asp-area="" asp-controller="Users" asp-action="Salir">Cerrar sesion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="misarticulos" asp-area="" asp-controller="Articulos" asp-action="ArticulosUserId">Mis articulos</a>
+                            </li>
+                        }
+                        @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.Role) == "Usuario")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="categorias" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a>
+                            </li>
+                        }
+                        </ul>
                 </div>
             </div>
         </nav>
@@ -61,6 +74,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
     <script>
+        /*
         const crearart = document.getElementById("crearart")
         const crearcuenta = document.getElementById("crearcuenta")
         const sesion = document.getElementById("sesion")
@@ -82,6 +96,7 @@
             crearcuenta.hidden = true
             misarticulos.hidden = false
         }
+        */
     </script>
 </body>
 </html>

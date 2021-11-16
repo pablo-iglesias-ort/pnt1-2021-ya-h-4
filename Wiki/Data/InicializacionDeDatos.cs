@@ -17,13 +17,13 @@ namespace MVC_Entity_Framework.Data
 				return;
 			}
 			var nuebaCategoria = new Categoria();
-			nuebaCategoria.Nombre = "Por defecto";
+			nuebaCategoria.Name = "Por defecto";
 			nuebaCategoria.Activa = true;
 			nuebaCategoria.Descripcion = "La categoria por defecto";
 			context.Add(nuebaCategoria);
 			context.SaveChanges();
 			var nuebaCategoriaSecu = new Categoria();
-			nuebaCategoriaSecu.Nombre = "Por defecto secundaria";
+			nuebaCategoriaSecu.Name = "Por defecto secundaria";
 			nuebaCategoriaSecu.Activa = true;
 			nuebaCategoriaSecu.Descripcion = "La categoria por defecto secundaria";
 			context.Add(nuebaCategoriaSecu);

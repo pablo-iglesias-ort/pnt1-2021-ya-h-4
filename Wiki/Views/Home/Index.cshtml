@@ -62,47 +62,4 @@
 }
 
 
-<script>
-       //esperamos que cargue el DOM para determinar que elementos de la interfaz de usuario quedaran activos segun si esta registrado o no, y si tiene rol de autor o administrador
-    (function () {
-        const crearart = document.getElementById("crearart")
-        const crearcuenta = document.getElementById("crearcuenta")
-        const sesion = document.getElementById("sesion")
-        const cerrarsesion = document.getElementById("cerrarsesion")
-        const misarticulos = document.getElementById("misarticulos")
-        const eliminar = document.getElementById("eliminar")
-        const desactivar = document.getElementById("desactivar")
-        const rol = localStorage.getItem("rol")
-        const userId = localStorage.getItem("UserId")
 
-        var eliminarbutons = document.getElementById("myDIV").querySelectorAll(".eliminar");
-        var desactivarbutons = document.getElementById("myDIV").querySelectorAll(".desactivar");
-        if (rol == "Autor") {
-            eliminarbutons.forEach(n => {
-                n.hidden = true
-            })
-        }
-        
-        if (rol==null) {
-            eliminarbutons.forEach(n => {
-                n.hidden = true
-            })
-            desactivarbutons.forEach(n => {
-                n.hidden = true
-            })
-        }
-
-        if (localStorage.getItem("token") === null) {
-            crearart.hidden = true
-            cerrarsesion.hidden = true
-            misarticulos.hidden = true
-
-        } else {
-            cerrarsesion.hidden = false
-            sesion.hidden = true
-            crearcuenta.hidden = true
-            misarticulos.hidden = false
-        }
-
-    })();
-</script>
