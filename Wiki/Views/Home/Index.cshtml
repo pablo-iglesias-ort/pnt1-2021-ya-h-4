@@ -22,8 +22,11 @@
                 
             </div>
             <div>
-                <a href="/desactivar" class="desactivar">Desactivar</a>
-                <a href="/eliminar" class="eliminar">Eliminar</a>
+
+                <a asp-controller="Articulos" asp-action="Edit" asp-route-id="@item.Articulo.Id" class="desactivar">Desactivar</a>
+             
+                <a asp-controller="Articulos" asp-action="Delete" asp-route-id="@item.Articulo.Id" class="eliminar">Eliminar</a>}
+
             </div>
             <div class="card-body">
                 <section>Descripcion: @Html.DisplayFor(modelItem => item.Articulo.Encabezado.Descripcion)</section>
