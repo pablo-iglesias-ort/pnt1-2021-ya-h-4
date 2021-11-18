@@ -21,7 +21,7 @@ namespace MVC_Entity_Framework.Models
         public IEnumerable<Categoria> CategoriasSecundaria { get; set; }
 
         [ForeignKey("AutorForeignKey")]
-        public Autor Autor { get; set; }
+        public Usuario Autor { get; set; }
         
         [ForeignKey("EncabezadoForeignKey")]
         public Encabezado Encabezado { get; set; }

@@ -26,7 +26,7 @@ namespace MVC_Entity_Framework.Controllers
 		public async Task<IActionResult> Index(string searchString)
 		{
 			List<ArticuloViewModel> viemodellist = new List<ArticuloViewModel>();
-			var query = await _context.Articulos
+			var query = await _context.Articulos.Where(a=>a.Actvo==true)
 				.Include(cat=>cat.CategoriaPrincipal)
 				.Include(cat => cat.CategoriasSecundaria)
 				.Include(a => a.Encabezado)

@@ -28,6 +28,9 @@ namespace MVC_Entity_Framework.Migrations
                     b.Property<Guid?>("AutorForeignKey")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("AutorId")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("CategoriaPrincipalId")
                         .HasColumnType("TEXT");
 
@@ -46,6 +49,8 @@ namespace MVC_Entity_Framework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AutorForeignKey");
+
+                    b.HasIndex("AutorId");
 
                     b.HasIndex("CategoriaPrincipalId");
 
@@ -254,9 +259,13 @@ namespace MVC_Entity_Framework.Migrations
 
             modelBuilder.Entity("MVC_Entity_Framework.Models.Articulo", b =>
                 {
-                    b.HasOne("MVC_Entity_Framework.Models.Autor", "Autor")
-                        .WithMany("Articulos")
+                    b.HasOne("MVC_Entity_Framework.Models.Usuario", "Autor")
+                        .WithMany()
                         .HasForeignKey("AutorForeignKey");
+
+                    b.HasOne("MVC_Entity_Framework.Models.Autor", null)
+                        .WithMany("Articulos")
+                        .HasForeignKey("AutorId");
 
                     b.HasOne("MVC_Entity_Framework.Models.Categoria", "CategoriaPrincipal")
                         .WithMany()

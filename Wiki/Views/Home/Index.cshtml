@@ -16,17 +16,23 @@
 <div id="myDIV">
     @foreach (var item in Model)
     {
+        @if(item.Articulo.Actvo || User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.Role) == "Admin") {
         <div class="card mt-3 border-dark">
             <div class="card-header">
                 Titulo: @Html.DisplayFor(modelItem => item.Articulo.Encabezado.Titulo)
                 
             </div>
             <div>
+                @if (item.Articulo.Actvo)
+                        {
 
                 <a asp-controller="Articulos" asp-action="Edit" asp-route-id="@item.Articulo.Id" class="desactivar">Desactivar</a>
-             
-                <a asp-controller="Articulos" asp-action="Delete" asp-route-id="@item.Articulo.Id" class="eliminar">Eliminar</a>}
-
+                        }
+                @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.Role) == "Admin")
+                {
+                    <a asp-controller="Articulos" asp-action="Edit" asp-route-id="@item.Articulo.Id" class="desactivar">Activar</a>
+                    <a asp-controller="Articulos" asp-action="Delete" asp-route-id="@item.Articulo.Id" class="eliminar">Eliminar</a>
+                }
             </div>
             <div class="card-body">
                 <section>Descripcion: @Html.DisplayFor(modelItem => item.Articulo.Encabezado.Descripcion)</section>
@@ -60,6 +66,7 @@
             <div class="card-footer">Autor: @Html.DisplayFor(modelItem => item.Articulo.Autor.Nombre)</div>
             <div>@Html.DisplayFor(modelItem => item.Articulo.Fecha)</div>
         </div>
+        }
     }
 </div>
 }

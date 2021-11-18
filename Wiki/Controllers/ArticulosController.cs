@@ -21,23 +21,23 @@ namespace MVC_Entity_Framework.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task <List<Articulo>> ArticulosUserId(Guid id)
+        public async Task<IActionResult> ArticulosUserId(Guid id)
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            //DFD8B40F - 4D19 - 4F95 - 8E71 - A58145588639
+            //DFD8B40F - 4D19 - 4F95 - 8E71 - A58145588639--b463004b-51ab-47e6-aade-6cb0c0cf9ce5
             var userid = currentUser.Claims.First().Value ;
             var user = await _context.Usuarios.Where(n => n.Nombre == userid).FirstOrDefaultAsync();
             var articulosList = new List<Articulo>();
             var query = await _context.Articulos
+                .Where(i => i.Autor.Id == user.Id)
                 .Include(a=>a.Autor)
                 .Include(x=>x.Encabezado)
-                .Where(i => i.Autor.Id == user.Id)
                 .ToListAsync();
 
             Console.WriteLine(query);
 
             articulosList = query;
-            return articulosList;
+            return View("Misarticulos", articulosList);
         }
 
         public async Task <IActionResult> ArticulosByCategoria(int categoriaid)
@@ -127,7 +127,8 @@ namespace MVC_Entity_Framework.Controllers
             if (ModelState.IsValid)
             {
                 System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-                var nombre=currentUser.Claims.First().Value;
+                var useractual=currentUser.Claims.First().Value;
+                var usercontext = await _context.Usuarios.Where(n => n.Nombre == useractual).FirstOrDefaultAsync();
                 //buscamos las categorias
                 var catprinc = await _context.Categorias.FirstOrDefaultAsync();
                 var catsecu = await _context.Categorias.Where(i => i.Id == secu).FirstOrDefaultAsync();
@@ -138,43 +139,51 @@ namespace MVC_Entity_Framework.Controllers
                 //articulo.CategoriasSecundaria.ad catsecu;
                 //asignamos palabras claves
                 articulo.PalabrasClave = articulovm.ArticuloDTO.PalalabrasCaves;
+                
                 articulo.Fecha = DateTime.Now;
-                var autor = new Autor()
+                if (usercontext != null)
                 {
-                    Nombre= nombre,
-                    Email= nombre,
-                    Apellido="Apellido"+nombre,
-                    FechaAlta=DateTime.Now,
-                };
-                var encabezado = new Encabezado()
-                {
-                    Titulo = articulovm.ArticuloDTO.encabezadotitulo,
-                    Descripcion=articulovm.ArticuloDTO.encabezadodescri,
-                };
-                var entrylist = new List<Entrada>();
-                var cuerpo = new Cuerpo()
-                {
-                    Entradas=entrylist,
-                };
-                await _context.SaveChangesAsync();
-                articulo.Autor = autor;
-                articulo.Encabezado = encabezado;
-                articulo.Cuerpo = cuerpo;
-                _context.Add(articulo);
-                try
-                {
-
+                    //var autor = new Autor()
+                    //{
+                    //    Id = usercontext.Id,
+                    //    Nombre = useractual,
+                    //    Email = useractual,
+                    //    Apellido = "Apellido" + useractual,
+                    //    FechaAlta = DateTime.Now,
+                    //};
+                    var encabezado = new Encabezado()
+                    {
+                        Titulo = articulovm.ArticuloDTO.encabezadotitulo,
+                        Descripcion = articulovm.ArticuloDTO.encabezadodescri,
+                    };
+                    var entrylist = new List<Entrada>();
+                    var cuerpo = new Cuerpo()
+                    {
+                        Entradas = entrylist,
+                    };
                     await _context.SaveChangesAsync();
-                }catch(Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-                var vmentrad = new EntradaCreateViewModel()
-                {
-                    ArtId = articulo.Id,
+                    articulo.Autor = usercontext;
+                    articulo.Encabezado = encabezado;
+                    articulo.Cuerpo = cuerpo;
+                    _context.Add(articulo);
+                    try
+                    {
 
-                };
-                return View("Entrada", vmentrad);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    var vmentrad = new EntradaCreateViewModel()
+                    {
+                        ArtId = articulo.Id,
+
+                    };
+                    return View("Entrada", vmentrad);
+                }
+                
+                
             }
             return View("Error");
         }
@@ -237,13 +246,13 @@ namespace MVC_Entity_Framework.Controllers
             {
                 return NotFound();
             }
-            return View(articulo);
+            return View("Desactivar",articulo);
         }
 
         //POST: Articulos/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Articulo articulo)
+        public async Task<IActionResult> Desactivar(int id, [Bind("Id")] Articulo articulo)
         {
             if (id != articulo.Id)
             {
@@ -254,11 +263,22 @@ namespace MVC_Entity_Framework.Controllers
             {
                 try
                 {
-                    _context.Update(articulo);
+                    var articulobd = await _context.Articulos.FindAsync(id);
+                    if(articulobd.Actvo == true)
+                    {
+                        articulobd.Actvo = false;
+                    }
+                    else
+                    {
+                        articulobd.Actvo=true;
+
+                    }
+                    _context.Update(articulobd);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     if (!articuloExists(articulo.Id))
                     {
                         return NotFound();
@@ -268,7 +288,7 @@ namespace MVC_Entity_Framework.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(articulo);
         }

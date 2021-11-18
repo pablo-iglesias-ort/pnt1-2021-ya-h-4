@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_Entity_Framework.Migrations
 {
     [DbContext(typeof(MVC_Entity_FrameworkContext))]
-    [Migration("20211115040359_nueva")]
-    partial class nueva
+    [Migration("20211117233756_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,9 @@ namespace MVC_Entity_Framework.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("AutorForeignKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("AutorId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("CategoriaPrincipalId")
@@ -48,6 +51,8 @@ namespace MVC_Entity_Framework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AutorForeignKey");
+
+                    b.HasIndex("AutorId");
 
                     b.HasIndex("CategoriaPrincipalId");
 
@@ -256,9 +261,13 @@ namespace MVC_Entity_Framework.Migrations
 
             modelBuilder.Entity("MVC_Entity_Framework.Models.Articulo", b =>
                 {
-                    b.HasOne("MVC_Entity_Framework.Models.Autor", "Autor")
-                        .WithMany("Articulos")
+                    b.HasOne("MVC_Entity_Framework.Models.Usuario", "Autor")
+                        .WithMany()
                         .HasForeignKey("AutorForeignKey");
+
+                    b.HasOne("MVC_Entity_Framework.Models.Autor", null)
+                        .WithMany("Articulos")
+                        .HasForeignKey("AutorId");
 
                     b.HasOne("MVC_Entity_Framework.Models.Categoria", "CategoriaPrincipal")
                         .WithMany()

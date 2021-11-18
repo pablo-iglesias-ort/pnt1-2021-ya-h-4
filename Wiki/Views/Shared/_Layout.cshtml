@@ -44,7 +44,7 @@
                                 <a class="nav-link text-dark" id="cerrarsesion" asp-area="" asp-controller="Users" asp-action="Salir">Cerrar sesion</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" id="misarticulos" asp-area="" asp-controller="Articulos" asp-action="ArticulosUserId">Mis articulos</a>
+                                <a class="nav-link text-dark" id="misarticulos" asp-area="" asp-controller="Articulos" asp-action="ArticulosUserId" >Mis articulos</a>
                             </li>
                         }
                         @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.Role) == "Usuario")

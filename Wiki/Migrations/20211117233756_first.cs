@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVC_Entity_Framework.Migrations
 {
-    public partial class nueva : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -101,7 +101,8 @@ namespace MVC_Entity_Framework.Migrations
                     AutorForeignKey = table.Column<Guid>(nullable: true),
                     EncabezadoForeignKey = table.Column<int>(nullable: true),
                     CuerpoForeignKey = table.Column<int>(nullable: true),
-                    PalabrasClave = table.Column<string>(nullable: true)
+                    PalabrasClave = table.Column<string>(nullable: true),
+                    AutorId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -109,6 +110,12 @@ namespace MVC_Entity_Framework.Migrations
                     table.ForeignKey(
                         name: "FK_Articulos_Usuarios_AutorForeignKey",
                         column: x => x.AutorForeignKey,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Articulos_Usuarios_AutorId",
+                        column: x => x.AutorId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -182,6 +189,11 @@ namespace MVC_Entity_Framework.Migrations
                 column: "AutorForeignKey");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Articulos_AutorId",
+                table: "Articulos",
+                column: "AutorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Articulos_CategoriaPrincipalId",
                 table: "Articulos",
                 column: "CategoriaPrincipalId");
@@ -231,6 +243,10 @@ namespace MVC_Entity_Framework.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Articulos_Usuarios_AutorForeignKey",
+                table: "Articulos");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Articulos_Usuarios_AutorId",
                 table: "Articulos");
 
             migrationBuilder.DropForeignKey(
